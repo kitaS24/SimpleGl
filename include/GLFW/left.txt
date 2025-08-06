@@ -1,0 +1,185 @@
+#define GLEW_STATIC
+
+#include <GLEW/glew.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <RenderImage.h>
+#include <render.h>
+
+// ASSERT(x) if (!(x)) __debugbreak();
+
+int DEBUG_ST = 1; // 1 = show debug
+
+std::string ShaderPath = "res/shaders/basic.shader";//res/shaders/basic.shader
+//std::string vertexShader = "";
+//std::string fragmentShader = "";
+static unsigned int DEBUG(int type ,std::string msg){
+
+    if (DEBUG_ST == 1) {
+        if(type == 1) {
+            std::cout << "LOG:  "+msg << std::endl;
+        }
+        if(type == 2) {
+            std::cout << "WARNING:  "+msg << std::endl;
+        }
+        if(type == 3) {
+            std::cout << "ERROR:  "+msg << std::endl;
+        }
+    }
+
+    return 0;
+
+}
+
+
+
+
+
+
+int main(void)
+
+
+
+{
+    GLFWwindow* window;
+
+    /* Initialize the library */
+    if (!glfwInit())
+        return -1;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+
+    glfwSwapInterval(1);
+
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
+    }
+
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+    if(glewInit() != GLEW_OK)
+        std::cout << "GLEW ERROR!" << std::endl;
+
+
+    std::cout << glGetString(GL_VERSION) << std::endl;
+    /* Loop until the user closes the window */
+    GLClearErrors();
+
+    unsigned int te1;
+
+    glGenTextures(1,&te1);
+    glBindTexture(GL_TEXTURE_2D,te1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    float texture[] = {
+
+            1,0,0,    0,1,0,
+            0,1,0,    1,0,0,
+
+    };
+
+
+    glTexImage2D(GL_TEXTURE_2D , 0,GL_RGB,2,2,0,GL_RGB,GL_FLOAT,texture);
+    GLLogCall();
+
+
+
+    glActiveTexture(GL_TEXTURE0);//GL_TEXTURE0 + slot
+
+    float pPos[] = {
+
+            -0.5,-0.5, 0,0,
+            0.5    ,-0.5,1,0,
+            0.5  ,0.5,1,1,
+            -0.5    ,0.5,0,1,
+
+    };
+    unsigned int Ibuffer[] = {
+
+            0,1,2,
+            2,3,0
+
+    };
+
+
+
+
+    unsigned int vao = vaoSetup();
+
+
+
+    unsigned int bufferA[] = {0,0};
+
+  bufferA[0] = createStaticVbufferF(pPos,4);
+
+
+
+    bufferA[1] = createDynamicIBbufferI(Ibuffer);
+
+
+
+
+
+    unsigned int shader = addShader(ShaderPath);
+
+
+
+    //changeShaderV(shader,"u_Color",4,1,0,0,1);
+
+    float t = 0;
+
+    while (!glfwWindowShouldClose(window))
+    {
+
+
+
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        //glTexImage2D(GL_TEXTURE_2D , 0,GL_RGBA8,2,2,0,GL_RGB,GL_UNSIGNED_INT,texture);
+
+        //glBindTexture(GL_TEXTURE_2D,0);
+
+        //glActiveTexture(GL_TEXTURE0);//GL_TEXTURE0 + slot
+        glUseProgram(0);
+        glBindBuffer(GL_ARRAY_BUFFER , 0);
+        //glBindVertexArray(0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER , 0);
+
+
+        t = t+0.00005;
+
+        DrawSetup(bufferA,shader);
+        changeShaderV(shader,"u_Color",4,abs(sin(t)),abs(cos(t)),0,1);
+
+        int location = __glewGetUniformLocation(shader,"u_Texture");
+        glUniform1f(location, 0);
+
+
+
+        Draw(2);
+        //glDrawElements(GL_TRIANGLES,3)
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+    return 0;
+}
