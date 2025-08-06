@@ -478,7 +478,7 @@ int main() {
     {
         // clear and start in 3D mode
         OpenGlErase(0.0f,0.7f,1.0f,1.0f,true,true);
-        OpenGlBeginFrame3D(800,600,2000);
+        OpenGlBeginFrame3D(window,800,600,2000,true);
 
         //get FPS and time from start
         FPS = OpenGlGetFPS(LastFrameT);
@@ -538,7 +538,7 @@ int main() {
     {
         // clear and start in 3D mode
         OpenGlErase(0.0f,0.7f,1.0f,1.0f,true,true);
-        OpenGlBeginFrame3D(800,600,2000);
+        OpenGlBeginFrame3D(window,800,600,2000,true);
 
         //get FPS and time from start
         FPS = OpenGlGetFPS(LastFrameT);
