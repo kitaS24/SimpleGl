@@ -282,3 +282,9 @@ int main() {
 
 # License
 **This project is licensed under the MIT License**
+
+## Third-Party Licenses
+**This project uses third-party libraries which have their own licenses**
+
+* [GLFW](licenses/GLFW)
+* [GLEW](licenses/GLEW)
