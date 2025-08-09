@@ -37,7 +37,7 @@ void OpenGlInit(bool GlLegacy){
 
 }
 
-bool CreateWindow(GLFWwindow* &window,unsigned int W,unsigned int H,const char *Title){
+bool CreateGlWindow(GLFWwindow* &window,unsigned int W,unsigned int H,const char *Title){
     //return:TRUE-window is created, FALSE-Failed
     window = glfwCreateWindow(W,H, Title, NULL, NULL);
     if (window == NULL)
@@ -434,7 +434,7 @@ int main() {
 
     //creating window with W 800 and H 600
     GLFWwindow* window;
-    if(!CreateWindow(window,800,600,"Test")){
+    if(!CreateGlWindow(window,800,600,"Test")){
         exit(-1);
     }
     while(!glfwWindowShouldClose(window))
@@ -471,7 +471,7 @@ int main() {
 
     //creating window with W 800 and H 600
     GLFWwindow* window;
-    if(!CreateWindow(window,800,600,"Test")){
+    if(!CreateGlWindow(window,800,600,"Test")){
         exit(-1);
     }
     while(!glfwWindowShouldClose(window))
@@ -528,7 +528,7 @@ int main() {
 
     //creating window with W 800 and H 600
     GLFWwindow* window;
-    if(!CreateWindow(window,800,600,"Test")){
+    if(!CreateGlWindow(window,800,600,"Test")){
         exit(-1);
     }
     //loading a texture
@@ -601,7 +601,7 @@ int main() {
 
     //creating window with W 800 and H 600
     GLFWwindow* window;
-    if(!CreateWindow(window,800,600,"Test")){
+    if(!CreateGlWindow(window,800,600,"Test")){
         exit(-1);
     }
     //loading a texture

@@ -13,7 +13,7 @@ int main() {
 
     //creating window with W 800 and H 600
     GLFWwindow* window;
-    if(!CreateWindow(window,800,600,"Test")){
+    if(!CreateGlWindow(window,800,600,"Test")){
         exit(-1);
     }
     //loading a texture
