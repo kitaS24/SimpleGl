@@ -347,7 +347,7 @@ std::string LoadShaderFile(std::string path) {
         for (int i = 0; i < Line.length(); ++i) {
             Out.append(1,Line.at(i));
         }
-
+        Out.append(1,'\n');
     }
     FR.close();
     return Out;
